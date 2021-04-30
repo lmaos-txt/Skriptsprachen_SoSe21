@@ -1,0 +1,63 @@
+# (Otto Santovenia, Luis Manuel Alfred, 1190173, 22.04.21 )
+
+# Ersetzen Sie die Antwortfelder (_____) durch Ihre gefundenen Antworten
+# Bem.: Sie dürfen gerne auch mehr Zeilen für Ihre Antwort nutzen
+
+
+A1  Methode der Klasse "String" zu
+  a: rechtsbündig: <string>.rjust(<int>)	
+  b: linksbündig:	<string>.ljust(<int>)
+  c: zentriert:		<string>.center(<int) // int sgibt hier die vorgegebene Berite
+
+A2  Länge des Strings
+  a: Methode 1		<string>.size
+  b: Methode 2		<string>.length
+
+A3  Methode zur Umwandlung in
+  a: Großbuchstaben	<string>.upcase
+  b: Kleinbuchstaben	<string>.downcase
+
+A4  Wege (Methoden) zum Testen auf "leerer String"
+  a: Weg 1		<string>.size == 0
+  b: Weg 2		<string>.empty
+  c: Weg 3		<string>.length == 0
+
+
+B2  Wie verhält sich der "Zentrierer", wenn es keine exakte Mitte gibt?
+   Bei der Breite 25 mit dem Wort gibt es keine direkte Mitte.
+   Die center-Methode lässt nach rechts dann einen Charakter mehr Platz 
+   als nach links.
+
+B3  Wie verhält sich Ruby im Fall A2 und A3(a) beim Umlaut in b?
+   Die beiden Methoden size und lenght liefern beide das korrekte 
+   Ergebniss 8 zurück.
+   Sowohl down- als auch upcase haben keine Probleme beim konvertieren 
+   zu upper als auch lowercase.
+
+B4  Wie Fall B3, aber nach Anwendung von "force_encoding":
+   Nach dem neuen encoding, Steht in der "b" folgendes: "DÃ¤nemark"
+   size und length liefern nun beide die Länge 9.
+   upcase macht daraus "DÃ¤NEMARK"
+   downcase macht daraus "dã¤nemark"
+
+B6* Was ergibt c.succ?
+   "Dies ist ein Saua."
+    Warum?
+   <sting>.succ inkrementiert den String. Dies bedeutet, dass das/die 
+   erste Zeichen/Ziffer inkrementiert wird. Gibt es heirbei einn Übertrag, 
+   wird wie bei der Addition das vorhergehende Zeichen auch inkrementiert.
+   
+C1 
+   ruby -e 'puts Time.now.to_i '
+C2
+   ruby -e 'puts Time.new.usec '
+C3  Arbeitet Ihre Systemuhr mit µs-Auflösung? Wie erkennen Sie das?
+   ja, siehe Messung unten
+
+C4* Was ist der kleinste von Ihnen ermittelte µs-Abstand?
+   $ ruby -e 'puts Time.new.usec, Time.new.usec '
+   912920
+   912921
+   Also 1
+
+
