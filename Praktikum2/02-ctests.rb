@@ -3,14 +3,14 @@ require "test/unit"
 class TestQueue < Test::Unit::TestCase
 
     def fill(length)
-        array = MyQueue.new(5)
+        array = MyQueue.new(length)
         i = 1
-        while i < length+1 do
+        while i <= length do
             array.enqueue(i)
             i+=1
         end
-        puts "Queue filled with:"
-        array.list
+        #puts "Queue filled with:"
+        #array.list
         return array
     end
 
@@ -61,20 +61,20 @@ end
 class TestStack < Test::Unit::TestCase
 
     def fill(length)
-        array = MyStack.new(5)
+        array = MyStack.new(length)
         i = 1
         while i < length+1 do
             array.push(i)
             i+=1
         end
-        puts "Queue filled with:"
-        array.list
+        #puts "Stack filled with:" Ausgabe von Befüllung
+        #array.list
         return array
     end
 
     def test_size
-        stack = fill(5)
-        assert stack.size == 5
+        stack = fill(6)
+        assert stack.size == 6
     end
 
     def test_clear
