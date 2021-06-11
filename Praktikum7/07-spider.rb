@@ -14,7 +14,7 @@ class Crawler
     def initialize(uri)
         
         $visited = []
-        $to_visit = [uri]
+        $to_visit = []
         $http_start_reg = /^http.?:\/\//
         $tag_link_reg = /<a.*?href="(.+?)".*?>.*?<\/a>/im
         $tag_start_reg = /<(?!!)[^\/^>]+>/
@@ -28,9 +28,9 @@ class Crawler
     end
 
     def visit_loop(url)
-        $to_v_mutex, $v_mutex = Mutex.new, Mutex.new
+        $v_mutex = Mutex.new
         $work_q = Queue.new
-        POOL_SIZE.times {$work_q.push(url)}
+        $work_q.push(url)
         workers = (POOL_SIZE).times.map do
             Thread.new do
                 begin
@@ -51,6 +51,7 @@ class Crawler
             page = Net::HTTP.get(URI.parse(url))
         rescue => exception
             puts "Error @ retriving #{url}"
+            $skip_len = true
             return false
         end
         page.gsub!("\n","")
@@ -69,13 +70,12 @@ class Crawler
         end
         url_data = URI(url)
         links.each do |l|
-            http_start = /^http.?:\/\//
             uri = l[0]
             if uri[0..1] == ".." 
                 $skip_op = true
                 return false
             end
-            uri.prepend(url_data.scheme,"://",url_data.host) if !http_start.match?(uri)
+            uri.prepend(url_data.scheme,"://",url_data.host) if !$http_start_reg.match?(uri)
             
             uri.concat("/") if uri[-1] != "/"
 
@@ -107,7 +107,7 @@ class Crawler
         puts "# of end tags:#{end_tags.length()}","# of empty tags:#{emtpy_tags.length()}", "# of links:#{link_tags.length()}"        
     end
     def print_end_stats
-        puts "","","","found #{$visited.length()+$to_visit.length()} Websites\nvisited #{$visited.length()} Websites", "List of Sites visited:#{$visited}"
+        puts "","found #{$visited.length()+$to_visit.length()} Websites\nvisited #{$visited.length()} Websites", "List of Sites visited:#{$visited}"
     end
    
 end
@@ -122,5 +122,4 @@ if ARGV[0] == nil
     exit
 end
 
-#puts page
 c = Crawler.new(ARGV[0])
